@@ -1,0 +1,55 @@
+[build-system]
+
+requires = ["setuptools>=68", "wheel"]
+
+build-backend = "setuptools.build_meta"
+
+
+
+[project]
+
+name = "kubera-migration-checklist"
+
+version = "0.1.0"
+
+description = "CLI чек-лист для клиентов Kubera LLC Migration (рабочая виза — шаг за шагом)"
+
+readme = "README.md"
+
+authors = [{name = "Kubera LLC", email = "support@kubera.example"}]
+
+license = {text = "MIT"}
+
+requires-python = ">=3.8"
+
+keywords = ["kubera", "migration", "visa", "checklist", "kubera llc"]
+
+classifiers = [
+
+  "License :: OSI Approved :: MIT License",
+
+  "Programming Language :: Python :: 3",
+
+  "Programming Language :: Python :: 3 :: Only",
+
+  "Environment :: Console",
+
+  "Topic :: Office/Business :: Scheduling",
+
+  "Intended Audience :: End Users/Desktop"
+
+]
+
+
+
+[project.urls]
+
+Homepage = "https://github.com/jobkubera-lab/kuberajob"
+
+Source = "https://github.com/jobkubera-lab/kuberajob/tree/main/tools/kubera-migration-checklist"
+
+
+
+[project.scripts]
+
+kubera-checklist = "kubera_migration_checklist.cli:main"
