@@ -10,7 +10,7 @@ build-backend = "setuptools.build_meta"
 
 name = "kubera-migration-checklist"
 
-version = "0.1.0"
+version = "0.1.1"
 
 description = "CLI чек-лист для клиентов Kubera LLC Migration (рабочая виза — шаг за шагом)"
 
