@@ -1,43 +1,30 @@
 # Kubera Migration Checklist
 
-Готовый чек-лист для клиентов **Kubera LLC Migration**: как подать на рабочую визу — шаг за шагом.
+> **Status: legacy library / not an active KUBERA product.**
 
-## Установка (из GitHub)
+This repository preserves an older command-line checklist experiment for migration-document workflows. It is kept for reference and history; it is **not** the current KUBERA / DZAMBALA product direction and should not be presented as a maintained public service.
+
+## Important
+
+- Do not rely on this repository for current visa, residence, legal or immigration requirements.
+- Always re-check current official government sources before using any migration information.
+- No active PyPI release is promised by this repository.
+- The historical GitHub Actions publishing workflow must not be treated as evidence that a package is currently published or maintained.
+
+## Local source use
+
+If the old CLI is needed for development or inspection, clone the repository and install it locally:
+
 ```bash
-pip install git+https://github.com/<YOUR_GH_USER_OR_ORG>/kubera-migration-checklist.git
+python -m pip install -e .
 ```
 
-Установка (локально)
-```
-pip install -e .
-```
+Historical CLI commands in the source may include checklist output in Markdown, text or optional PDF form. They are retained as reference code, not as a supported customer product.
 
-Использование
-```
-kubera-checklist
-kubera-checklist --output checklist.md
-kubera-checklist --format txt --output checklist.txt
-pip install "reportlab>=4"           # для PDF
-kubera-checklist --format pdf --output checklist.pdf
-```
+## Maintenance policy
 
-Публикация на PyPI
+New KUBERA engineering work should go to the active projects recorded in the main account `STATUS.md`. This repository should receive only factual maintenance, security fixes or archival clarification unless the owner explicitly reactivates it.
 
-Автоматически — при создании GitHub Release (см. GitHub Actions).
+## License
 
-Ручная публикация:
-```
-python -m pip install --upgrade build twine
-python -m build
-python -m twine upload dist/*
-```
-
-**`LICENSE`**
-
-
-
-MIT License
-
-
-Copyright (c) 2025 Kubera
-... (\u0441тандартный текст MIT, оставить как есть) ...
+The repository contains a separate [`LICENSE`](./LICENSE) file. That file, not copied text inside this README, is the authoritative license notice for this repository.
