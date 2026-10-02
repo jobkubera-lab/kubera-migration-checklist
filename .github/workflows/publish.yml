@@ -1,23 +1,78 @@
 name: Build and Publish to PyPI
 
 on:
+  pull_request:
+    paths:
+      - "pyproject.toml"
+      - "src/**"
+      - ".github/workflows/publish.yml"
+  push:
+    branches: [main]
+    paths:
+      - "pyproject.toml"
+      - "src/**"
+      - ".github/workflows/publish.yml"
   release:
     types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build-publish:
     runs-on: ubuntu-latest
+    env:
+      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
-      - name: Install build
-        run: python -m pip install --upgrade build
-      - name: Build wheel & sdist
+          python-version: "3.11"
+
+      - name: Install build tooling
+        run: python -m pip install --upgrade build twine
+
+      - name: Build wheel and sdist
         run: python -m build
+
+      - name: Validate distributions
+        run: python -m twine check dist/*
+
+      - name: Verify release tag matches package version
+        if: github.event_name == 'release'
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          python - <<'PY'
+          import os
+          import pathlib
+          import tomllib
+
+          data = tomllib.loads(pathlib.Path("pyproject.toml").read_text(encoding="utf-8"))
+          version = data["project"]["version"]
+          expected = f"v{version}"
+          actual = os.environ["RELEASE_TAG"]
+
+          if actual != expected:
+              raise SystemExit(
+                  f"Release tag {actual!r} does not match project version {version!r}; "
+                  f"expected {expected!r}."
+              )
+
+          print(f"Release tag {actual} matches package version {version}.")
+          PY
+
       - name: Publish to PyPI
+        if: github.event_name == 'release' && env.PYPI_API_TOKEN != ''
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          password: ${{ env.PYPI_API_TOKEN }}
+
+      - name: Explain skipped PyPI publication
+        if: github.event_name == 'release' && env.PYPI_API_TOKEN == ''
+        run: |
+          echo "::warning::Build is valid, but PyPI publication was skipped because PYPI_API_TOKEN is not configured."
